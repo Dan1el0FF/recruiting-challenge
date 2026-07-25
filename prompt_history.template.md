@@ -1,4 +1,4 @@
-# Prompt history — <your name>
+# Prompt history — Daniel Sánchez Huerta
 
 > Raw, unedited transcript. False starts and bad prompts are signal, not embarrassment.
 >
@@ -7,7 +7,7 @@
 ## Tool(s) used
 
 - [ ] Claude Code
-- [ ] Claude.ai
+- [X] Claude.ai
 - [ ] Cursor
 - [ ] Copilot
 - [ ] ChatGPT
@@ -16,7 +16,7 @@
 
 ## How much of the work was AI-assisted
 
-- [ ] Most of it
+- [X] Most of it
 - [ ] About half
 - [ ] Less than half — used it for specific tasks
 - [ ] None at all
@@ -27,12 +27,10 @@
 
 For each session, paste the raw transcript or the prompts you sent, in order. Don't trim.
 
-### Session 1 — <topic>
+### Session 1
 
 **Prompt:**
-```
-<paste verbatim>
-```
+
 
 **What the model returned:**
 <short summary or paste>
@@ -57,6 +55,8 @@ For each session, paste the raw transcript or the prompts you sent, in order. Do
 ### Example 1
 
 - **The prompt:**
+
+
 - **What Claude returned:**
 - **What was wrong with it** (technically, not just stylistically):
 - **How I caught it** (what tipped you off — code reading, test failure, behavior in the browser, prior experience):
