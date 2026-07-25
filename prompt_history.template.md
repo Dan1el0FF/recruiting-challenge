@@ -27,24 +27,64 @@
 
 For each session, paste the raw transcript or the prompts you sent, in order. Don't trim.
 
-### Session 1
+### Session 1 Organización de trabajo
 
 **Prompt:**
 
+Lee el siguiente siguiente repositorio https://github.com/Dan1el0FF/recruiting-challenge y ayudame a definir como comenzar a trabajar en el para poder completarlo en 6 horas.
 
 **What the model returned:**
-<short summary or paste>
+
+Resumen:
+
+Bloque 1 — Exploración (45 min)
+
+Bloque 2 — Diagnóstico y priorización (30 min)
+
+Bloque 3 — Arreglos + feature con IA (3–3.5 h)
+
+Bloque 4 — Documentación técnica (30 min)
+
+Bloque 5 — Los 4 documentos humanos, SIN IA (1–1.25 h)
+
+Bloque 6 — Prompt history y envío (15 min)
+
+**What I accepted, rejected, or refined:**
+
+Me gustó la organización de los bloques de trabajo como empezar la parte de explorar el probléma (bloque 1), pero no me gustó dejar la parte de responder los documentos humanos casi hasta el final, prefiero irlo contestando en paralelo mientras voy solucionando los problémas.
+---
+
+### Session 2 Seleccionar el mejor feature a implementar
+
+**Prompt:**
+
+Dame más detalles sobre que feature me conviene utilizar y creame una tabla de ventajas contra desventajas de cada uno.
+…
+
+**What the model returned:**
+
+Resumen:
+
+Mi recomendación: Feature C — Order search with filters
+
+Razón principal: el criterio de evaluación dice explícitamente "Quality > quantity" y "Working longer doesn't help; working faster doesn't hurt" — pero también dice que van a probar en la entrevista técnica si puedes explicar y defender cada decisión. Con Webhooks, el riesgo real no es que "no se vea bien" sino que te quedes sin poder decir con confianza en el signoff "esto lo probé y funciona" para las partes que más importan (reintentos, idempotencia). Eso te deja con más ❌ de los que quieres, y forzado a escribir sobre cosas que no llegaste a validar.
+---
+
+**What I accepted, rejected, or refined:**
+
+Me llamó más la antención la feature A en vez de la C por que sentí que era lo más simple y con mayor valor para implementar en la app. 
+
+### Session 3 
+
+**Prompt:** 
+
+**What the model returned:**
+
+Resumen:
 
 **What I accepted, rejected, or refined:**
 
 
----
-
-### Session 2 — <topic>
-
-…
-
----
 
 ## What Claude (or your AI tool) got wrong
 
