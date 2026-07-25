@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ordersDal } from '../dal/orders-dal.js';
 import { randomUUID } from 'node:crypto';
+import { ordersToCSV } from '../lib/csv.js';
 
 export const ordersRouter = Router();
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,6 +13,24 @@ ordersRouter.get('/', (req, res) => {
     limit: typeof req.query.limit === 'string' ? Number(req.query.limit) : undefined,
   });
   res.json({ orders });
+});
+
+// IMPORTANTE: esta ruta debe ir ANTES de '/:id', o Express interpreta 'export' como un ID
+ordersRouter.get('/export', (req, res) => {
+  const from = typeof req.query.from === 'string' ? req.query.from : undefined;
+  const to = typeof req.query.to === 'string' ? req.query.to : undefined;
+
+  if (!from || !to) {
+    res.status(400).json({ error: 'missing_date_range', detail: 'from and to are required (YYYY-MM-DD)' });
+    return;
+  }
+
+  const orders = ordersDal.listByMerchant(req.merchantId!, { from, to, limit: 10000 });
+  const csv = ordersToCSV(orders);
+
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="orders_${from}_to_${to}.csv"`);
+  res.send(csv);
 });
 
 ordersRouter.get('/:id', (req, res) => {
@@ -44,5 +63,3 @@ ordersRouter.post('/', (req, res) => {
   });
   res.status(201).json({ order });
 });
-
-

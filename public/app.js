@@ -4,6 +4,7 @@ const uniqueCustomersEl = document.getElementById('unique-customers');
 const avgOrderEl = document.getElementById('avg-order');
 const revenue30dEl = document.getElementById('revenue-30d');
 const ordersTbody = document.getElementById('orders-tbody');
+const downloadBtn = document.getElementById('download-csv-btn');
 
 function api(path) {
   return fetch(path, { headers: { 'X-Merchant-Id': select.value } }).then((r) => r.json());
@@ -15,6 +16,30 @@ function money(cents) {
 
 function isoDate(d) {
   return d.toISOString().slice(0, 10);
+}
+
+async function downloadCSV() {
+  const now = new Date();
+  const thirtyAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const from = isoDate(thirtyAgo);
+  const to = isoDate(now);
+
+  const response = await fetch(`/api/orders/export?from=${from}&to=${to}`, {
+    headers: { 'X-Merchant-Id': select.value },
+  });
+
+  if (!response.ok) {
+    alert('Error al descargar el CSV');
+    return;
+  }
+
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `orders_${from}_to_${to}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 async function refresh() {
@@ -43,4 +68,5 @@ async function refresh() {
 }
 
 select.addEventListener('change', refresh);
+downloadBtn.addEventListener('click', downloadCSV);
 refresh();
