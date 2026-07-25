@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { initSchema, db } from '../src/db.js';
 import { ordersDal } from '../src/dal/orders-dal.js';
+import { EMAIL_REGEX } from '../src/routes/orders.js';
 
 test('orders DAL: create + listByMerchant returns the order', () => {
   initSchema();
@@ -88,4 +89,17 @@ test('orders DAL: sumAmountByMerchant subtracts refunds from sales', () => {
 
   const total = ordersDal.sumAmountByMerchant('m_rev', '2000-01-01', '2100-01-01');
   assert.equal(total, 12000); // 100 + 50 - 30 = $120.00 → 12000 centavos
+});
+
+//test para comprobar el fix 3: Al hacer un post para crear una orden filtre la información de correo para evitar meter otro tipo de datos.
+test('EMAIL_REGEX rejects XSS payloads and accepts valid emails', () => {
+  // casos válidos - deben pasar
+  assert.equal(EMAIL_REGEX.test('ana@gmail.com'), true);
+  assert.equal(EMAIL_REGEX.test('test@acme.com'), true);
+
+  // casos maliciosos / inválidos - deben ser rechazados
+  assert.equal(EMAIL_REGEX.test('<img src=x onerror="alert(1)">'), false);
+  assert.equal(EMAIL_REGEX.test('<script>alert(1)</script>'), false);
+  assert.equal(EMAIL_REGEX.test('sin arroba'), false);
+  assert.equal(EMAIL_REGEX.test(''), false);
 });

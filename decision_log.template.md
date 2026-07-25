@@ -39,13 +39,18 @@ I wrote this decision log entirely without AI assistance. The only tool I used o
   - Alternatives I considered and rejected:
   La alternativa que consideré fue filtrar también por tipo de estatus, pero lo rechacé por falta de tiempo.
 
-- **Issue 3 — <short title>**
+- **Issue 3 — Validación de formato de correo **
   - What was wrong or weak:
+  Antes al hacer un post para crear una orden simplemente se toma la información del correo sin validar si realmente es un correo o si por el contrario tiene otro tipo de información.
   - Shape of my improvement:
-  - **Confidence (1–10):**
+  Utilizo regex en la entrada de los datos para definir la forma que debe tener un correo electrónico válido y rechaza los que no siguen ese formato como podría ser un código html malicioso el cual se rechaza antes de guardarse en la base de datos.
+  - **Confidence (1–10):** 8
   - **What would falsify this fix:**
+  El regex que implementé no es perfecto o aplica para todos los casos así todavia hay posibilidad de falsearlo y subir información que no sea un correo electrónico
   - **I disagreed with Claude on:**
+  Claude quería utilizar una libreria para filtrar los correos electrónicos, sin embargo no estuve de acuerdo con ello ya que habia otra forma más simple para solucionarlo utilizando regex.
   - Alternatives I considered and rejected:
+  La alternativa que consideré fue utilizar una libreria especializada en detectar correos electrónicos sin embargo no la utilice debido a que me pareció algo innecesario ya que el objetivo principal es que no entre código html malicioso y utilizando el regex arreglamos eso sin tener que meter librerias o cosas extras.
 
 ## Feature chosen
 

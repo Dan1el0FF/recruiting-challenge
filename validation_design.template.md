@@ -1,4 +1,4 @@
-# Validation design — <your name>
+# Validation design — Daniel Sánchez Huerta
 
 > **Write this yourself, without AI assistance.** Spell-check is fine. AI-drafted validation design is an automatic decline — this artifact measures *your* judgment about how to make AI-augmented code safe to ship, which is the load-bearing architect-tier signal.
 >

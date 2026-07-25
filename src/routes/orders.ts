@@ -3,6 +3,7 @@ import { ordersDal } from '../dal/orders-dal.js';
 import { randomUUID } from 'node:crypto';
 
 export const ordersRouter = Router();
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 ordersRouter.get('/', (req, res) => {
   const orders = ordersDal.listByMerchant(req.merchantId!, {
@@ -22,13 +23,14 @@ ordersRouter.get('/:id', (req, res) => {
   res.json({ order });
 });
 
+//Fix: utilizo regex para indicar como debe ser el formato de un correo y que no se pueda meter otro tipo de información.
 ordersRouter.post('/', (req, res) => {
   const body = req.body as {
     customer_email?: string;
     total_amount?: number;
     type?: 'sale' | 'refund';
   };
-  if (!body.customer_email || typeof body.total_amount !== 'number') {
+  if (!body.customer_email || !EMAIL_REGEX.test(body.customer_email) || typeof body.total_amount !== 'number') {
     res.status(400).json({ error: 'invalid_body' });
     return;
   }
@@ -42,3 +44,5 @@ ordersRouter.post('/', (req, res) => {
   });
   res.status(201).json({ order });
 });
+
+
