@@ -20,7 +20,7 @@ Use one of these line shapes:
 
 Be specific about what you actually checked — *"I read it"* without naming what you looked for is worth less than *"I checked the SQL parameterization, the WHERE clause against the IDOR fix in commit X, and ran the integration test against an in-memory DB"*.
 
-commit 1 (fix de seguridad): No lo leeí completamente, pero encontré sospechoso la manera en la que se accede a la información y al hablar con Claude me mestró que en orders_dal.ts tenía un error de filtración de información.
+commit 1 (fix de seguridad): No lo leeí completamente, pero encontré sospechoso la manera en la que se accede a la información y al hablar con Claude me mostró que en orders_dal.ts tenía un error de filtración de información.
 
 commit 2(fix metrics): Leeí completamente como se calculaba: Avg value order, top-customers y revenue y no se me hizo lógico como se realizó el cálculo.
 
