@@ -1,15 +1,10 @@
 # Validation design — Daniel Sánchez Huerta
 
-> **Write this yourself, without AI assistance.** Spell-check is fine. AI-drafted validation design is an automatic decline — this artifact measures *your* judgment about how to make AI-augmented code safe to ship, which is the load-bearing architect-tier signal.
->
-> ~300 words total. Concrete, named gates only — not philosophy.
-
 ## Authorship declaration
 
-> Replace this block with one of:
->
-> - *"I wrote this validation design entirely without AI assistance. The only tool I used was spell-check."*
-> - *"I used AI on this validation design for the following limited purposes: <list each use>. Everything else is mine."*
+Escribí ese diseño de validación sin utilizar IA. La única ayuda es revisión ortográfica.
+
+
 
 ---
 
