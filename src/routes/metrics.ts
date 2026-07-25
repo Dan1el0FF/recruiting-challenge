@@ -24,11 +24,12 @@ metricsRouter.get('/summary', (req, res) => {
     )
     .get(merchantId) as { n: number };
 
+  // Fix: el promedio ahora excluye a rembolsos del cálculo
   const avgOrderRow = metricsDb
-    .prepare(
-      `SELECT COALESCE(AVG(total_amount), 0) AS avg FROM orders WHERE merchant_id = ?`,
-    )
-    .get(merchantId) as { avg: number };
+  .prepare(
+    `SELECT COALESCE(AVG(total_amount), 0) AS avg FROM orders WHERE merchant_id = ? AND type = 'sale'`,
+  )
+  .get(merchantId) as { avg: number };
 
   res.json({
     merchant_id: merchantId,
@@ -38,13 +39,18 @@ metricsRouter.get('/summary', (req, res) => {
   });
 });
 
+
+//Fix: ahora para medir quienes son los clientes que más han gastado no se toma en cuenta los refunds, solo se toma en cuenta sales
+
 metricsRouter.get('/top-customers', (req, res) => {
   const merchantId = req.merchantId!;
   const limit = Number(req.query.limit ?? 5);
 
   const rows = metricsDb
     .prepare(
-      `SELECT customer_email, COUNT(*) AS order_count, SUM(total_amount) AS total_spent
+      `SELECT customer_email, COUNT(*) AS order_count,
+         SUM(CASE WHEN type = 'sale' THEN total_amount ELSE 0 END) -
+         SUM(CASE WHEN type = 'refund' THEN total_amount ELSE 0 END) AS total_spent
        FROM orders
        WHERE merchant_id = ?
        GROUP BY customer_email

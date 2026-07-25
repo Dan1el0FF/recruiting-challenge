@@ -1,4 +1,4 @@
-# Sign-off — <your name>
+# Sign-off — Daniel Sánchez Huerta
 
 > **Write this yourself, without AI assistance.** Spell-check is fine. The whole point of this artifact is the first-person attribution — AI cannot author it authentically.
 >
@@ -6,12 +6,7 @@
 
 ## Authorship declaration
 
-> Replace this block with one of:
->
-> - *"I wrote this sign-off entirely without AI assistance."*
-> - *"I used AI on this sign-off for the following limited purposes: <list>. Everything else is mine."*
-
----
+I wrote this sign-off entirely without AI assistance
 
 ## How to fill this in
 

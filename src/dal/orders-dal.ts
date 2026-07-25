@@ -35,7 +35,7 @@ export const ordersDal = {
       .all(merchantId, limit) as OrderRow[];
   },
 
-  //Función anterior con fallas de seguridad (se puede eliminar)
+  //esta función tiene fallas de seguridad (se puede eliminar)
 
   /*getById(id: string): OrderRow | undefined {
     return db.prepare(`SELECT * FROM orders WHERE id = ?`).get(id) as OrderRow | undefined;
@@ -56,11 +56,13 @@ export const ordersDal = {
     return this.getById(order.id, order.merchant_id)!;
   },
 
+  //Fix: esta función calcula incorrectamente las ganancias por que también suma los refunds en vez de restarlos
   /**
    * Sum total_amount over a date range for a merchant.
    * Used by the revenue endpoint.
    */
-  sumAmountByMerchant(merchantId: string, from: string, to: string): number {
+
+  /*sumAmountByMerchant(merchantId: string, from: string, to: string): number {
     const row = db
       .prepare(
         `SELECT COALESCE(SUM(total_amount), 0) AS total
@@ -70,4 +72,25 @@ export const ordersDal = {
       .get(merchantId, from, to) as { total: number };
     return row.total;
   },
+  */
+
+  //Fix: Ahora se calcula correctamente las ganancias restando el rembolso a las ventas
+  sumAmountByMerchant(merchantId: string, from: string, to: string): number {
+    const row = db
+      .prepare(
+        `SELECT COALESCE(
+          SUM(CASE WHEN type = 'sale' THEN total_amount ELSE 0 END) -
+          SUM(CASE WHEN type = 'refund' THEN total_amount ELSE 0 END),
+        0) AS total
+        FROM orders
+        WHERE merchant_id = ? AND created_at >= ? AND created_at < ?`,
+      )
+      .get(merchantId, from, to) as { total: number };
+    return row.total;
+  },
+
+
+
 };
+
+  

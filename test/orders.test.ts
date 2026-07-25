@@ -55,3 +55,37 @@ test('orders DAL: getById does not leak orders across merchants', () => {
   const got = ordersDal.getById('o3', 'm_other');
   assert.equal(got, undefined);
 });
+
+//test para comprobar fix 2: Revenue se calcula correctamente
+test('orders DAL: sumAmountByMerchant subtracts refunds from sales', () => {
+  initSchema();
+  db.prepare(`INSERT OR IGNORE INTO merchants (id, name) VALUES ('m_rev', 'Revenue Test')`).run();
+
+  ordersDal.create({
+    id: 'r1',
+    merchant_id: 'm_rev',
+    customer_email: 'x@y.com',
+    total_amount: 10000, // $100.00 en centavos
+    type: 'sale',
+    status: 'completed',
+  });
+  ordersDal.create({
+    id: 'r2',
+    merchant_id: 'm_rev',
+    customer_email: 'x@y.com',
+    total_amount: 5000, // $50.00
+    type: 'sale',
+    status: 'completed',
+  });
+  ordersDal.create({
+    id: 'r3',
+    merchant_id: 'm_rev',
+    customer_email: 'x@y.com',
+    total_amount: 3000, // $30.00 refund
+    type: 'refund',
+    status: 'completed',
+  });
+
+  const total = ordersDal.sumAmountByMerchant('m_rev', '2000-01-01', '2100-01-01');
+  assert.equal(total, 12000); // 100 + 50 - 30 = $120.00 → 12000 centavos
+});

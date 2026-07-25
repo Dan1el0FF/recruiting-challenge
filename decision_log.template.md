@@ -1,4 +1,4 @@
-# Decision Log — <your name>
+# Decision Log — Daniel Sánchez Huerta
 
 > **Write this yourself, without AI assistance.** Spell-check is fine. AI-drafted, AI-rewritten, or AI-polished decision logs are an automatic decline — see `SUBMISSION.md` for why.
 >
@@ -6,32 +6,38 @@
 
 ## Authorship declaration
 
-> Replace this block with one of the two statements below, in your own words if you prefer:
->
-> - *"I wrote this decision log entirely without AI assistance. The only tool I used on it was spell-check."*
-> - *"I used AI on this decision log for the following limited purposes: <list each use>. Everything else is mine."*
-
----
+I wrote this decision log entirely without AI assistance. The only tool I used on it was spell-check
 
 ## Issues addressed
 
 > Defects, security smells, architectural problems, missing pieces, scaling risks — anything you decided was worth your time. For each, fill in **every** sub-field. An empty field is a worse signal than an awkward answer.
 
-- **Issue 1 — <short title>**
+- **Issue 1 — EndPoint con falla de seguridad**
   - What was wrong or weak:
+  Al leer los archivos me di cuenta que cuando se hace un request get /api/orders/:id solo te pide el id del producto, pero no corrobora si el merchant_id coincide con el merchant_id de quien hace la petición lo que quiere decir que tan solo conociendo la id de la orden puedes obtener información relacionada sobre la compra aunque no seas el cliente.
   - Shape of my improvement:
-  - **Confidence (1–10):**
+  Ahora al hacer una petición de datos sobre una orden pide el merchant_id y compara que coincida con el cliente, de lo contrario no te da la información.
+  - **Confidence (1–10):** 9
   - **What would falsify this fix** (a specific scenario, input, or behavior that would prove me wrong):
+  Por ejemplo, que Acme Supplies pudiera acceder a la información de ordenes de Bistro Verde o viceversa.
   - **I disagreed with Claude on:** (name where you pushed back during this fix — the rejected suggestion, the alternative shape, the over-scoped refactor — or write *"did not disagree"* and be ready to defend that in the interview)
+  No estuvé en desacuerdo.
   - Alternatives I considered and rejected:
+  En vez de filtrar con SQL por id y merchant_id traer toda la información y despues comparar, pero se descartó por que es ineficiente y más dificil de escalar.
 
-- **Issue 2 — <short title>**
+- **Issue 2 — Métricas Calculadas Incorrectamente**
   - What was wrong or weak:
+  Al ver como se calculaba el promedio de las ordenes, ganancias y principales clientes me di cuenta que cometían el mismo error de tomar en cuenta las ordenes de tipo rembolso ya que estás no reflejan las ganancias y tampoco el promedio de una orden de venta y finalmente en principales clientes también se sumaban todos los tipos de ordenes entonces por ejemplo, si tenian una orden de $500 y una orden de rembolso de $400, la metrica lo toma como si el cliente tuviera una inversión de $900 en vez de $100.
+
   - Shape of my improvement:
-  - **Confidence (1–10):**
+  Para calcular las ganancias ahora en vez de sumar toda la columna lo que hace es restar todos los rembolsos a todas las ventas y en el caso de top-customers y Avg order value simplemente se excluye del cálculo.
+  - **Confidence (1–10):** 7
   - **What would falsify this fix:**
+   Podría no funcionar en el caso de cambiar el status de 'complete' a algun otro ya que asume que todos los status son de tipo "complete" y en realidad esto puede afectar como se calcula la métrica, pero podria simplemente añadir otro filtro para que los calculos solo se hagan con ordenes con status "complete".
   - **I disagreed with Claude on:**
+  No estuve en desacuerdo.
   - Alternatives I considered and rejected:
+  La alternativa que consideré fue filtrar también por tipo de estatus, pero lo rechacé por falta de tiempo.
 
 - **Issue 3 — <short title>**
   - What was wrong or weak:
