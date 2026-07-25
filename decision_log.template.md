@@ -73,7 +73,7 @@ Cambiaría mi perspectiva mi implementación si se le añadieran más funciones 
 
 > Class-of-bug instances you saw and chose not to touch. For each, name the *reason* you cut it (scope / time / dependency / "needs a larger conversation").
 
-Cuando noté que se calculaba mal top client también me di cuenta de que un error no documentado fue que a pesar de tener esa información disponible no se muestra en la app.
+Cuando noté que se calculaba mal top client también me di cuenta de que un error que no esta documentado el cual es de que a pesar de tener esa información disponible no se despliega en la app.
 
 ## Docs / code I left alone deliberately
 
