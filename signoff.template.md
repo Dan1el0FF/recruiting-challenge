@@ -20,16 +20,22 @@ Use one of these line shapes:
 
 Be specific about what you actually checked — *"I read it"* without naming what you looked for is worth less than *"I checked the SQL parameterization, the WHERE clause against the IDOR fix in commit X, and ran the integration test against an in-memory DB"*.
 
----
+commit 1 (fix de seguridad): No lo leeí completamente, pero encontré sospechoso la manera en la que se accede a la información y al hablar con Claude me mestró que en orders_dal.ts tenía un error de filtración de información.
+
+commit 2(fix metrics): Leeí completamente como se calculaba: Avg value order, top-customers y revenue y no se me hizo lógico como se realizó el cálculo.
+
+commit 3(fix de seguridad): Leeí completamente como se recibian los posts en el archivo orders.ts para darme cuenta que realmente no se filtraba lo que llegaba al post al crear una orden.
+
+commit 4:(feat exportar archivo csv): No leeí completamente los archivos necesarios para la modificaciones,pero si entendí la estructura de donde generar los cambios, entonces le pedí a Claude que genere las modificaciones como colocar la función para descargar el csv en la seccion de descargas. y le dije que información quería exportar y en que formato.
 
 ## Sign-offs
 
 > Add lines below. List by commit SHA (or a short commit-title prefix if you prefer); ordering by time is fine.
-
-- `<sha>` —
-- `<sha>` —
-- `<sha>` —
-
+ 
+-fix (seguridad): agregue un nuevo endpoint
+-fix (metricas): corregí el cálculo de métricas
+-Fix(seguridad): validé que el correo electrónico tenga el formato adecuado
+-feat(csv): agregué un endpoint para exportar csvs
 ---
 
 ## What this artifact measures
