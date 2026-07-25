@@ -54,30 +54,39 @@ I wrote this decision log entirely without AI assistance. The only tool I used o
 
 ## Feature chosen
 
-- **Feature:**
+- **Feature:*Opción A: CSV export of orders*
 - **Why this one and not the others:**
+
+Elegi desarrollar la feature A por que ofrece mayor valor inmediato para los comerciantes con una relación de complejidad relativamente baja. La posibilidad de descargar los pedidos en un archivo CSV facilita tareas comunes como la generación de reportes o el análisis de datos ya que actualmente, la app no cuenta ese tipo de opciones.
+
 - **What I cut to ship it in budget:**
-- **Confidence (1–10) that the shape I picked is the right one:**
+  
+Debido a limitaciones de tiempo, decidí mantener la funcionalidad lo más simple posible. La exportación genera automáticamente un archivo con los pedidos de los últimos 30 días y no permite que el usuario seleccione un rango de fechas personalizado. También opté por exportar únicamente en formato CSV, ya que es un estándar ampliamente compatible y suficiente para una primera versión.
+
+- **Confidence (1–10) that the shape I picked is the right one:** 8
+  
 - **What would change my mind:**
+
+Cambiaría mi perspectiva mi implementación si se le añadieran más funciones como seleccionar rangos de fechas para obtener los datos o incluso permitir exportar con ciertos formatos como excel.
 
 ## Things I noticed but did NOT fix
 
 > Class-of-bug instances you saw and chose not to touch. For each, name the *reason* you cut it (scope / time / dependency / "needs a larger conversation").
 
--
+Cuando noté que se calculaba mal top client también me di cuenta de que un error no documentado fue que a pesar de tener esa información disponible no se muestra en la app.
 
 ## Docs / code I left alone deliberately
 
--
+No cambie cómo se registran las rutas, ni el manejo de errores general, aunque hubiera podido por ejemplo, centralizar la validación de email en un middleware reusable en vez de dejarla dentro de orders.ts.
 
 ## What I'd do with another 6 hours
 
--
+- Conectaría top-customers a la UI del dashboard y agregaría muchas más estadísticas por que pienso que más que servir como una base de datos la aplicación debería poder ayudar a generar análisis más técnicos que ayuden a la toma de desiciones.
 
 ## Where I felt uncertain
 
 > At least three places in this submission where you were not confident. Genuine uncertainty is a strength signal. "Nothing — I was confident everywhere" is itself a red flag and will be probed.
 
--
--
--
+- La arquitectura me costo trabajo de entender al principio
+- El lenguaje de programación typescript
+- Implementar el uso de regex para el fix de detectar email con formato correcto
