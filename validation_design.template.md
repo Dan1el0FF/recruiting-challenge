@@ -28,22 +28,26 @@ Forms a gate can take, in rough order of robustness:
 
 For each issue *class* you addressed (not each instance — group by class):
 
-### Class 1 — <name the class, e.g. "Multi-tenant authorization (IDOR)">
+### Class 1 Multi-tenant authorization (IDOR)
 
-- **Instances I fixed:** <list, e.g. "Bug B in GET /api/orders/:id">
-- **The gate I built (or would build):** <specific name and shape>
+- **Instances I fixed:** security bug in the endpoint GET /api/orders/:id">
+- **The gate I built (or would build):** Pide el merchant_id al usar el endpoint GET /api/orders/:id para saber si la información le corresponde al comerciante  o no
 - **What this gate would catch that a regression test would miss:** <the next instance, the next refactor, the next team member>
-- **Where to see the gate in the diff** (file path / commit / line range) — *if you actually built it*:
-- **If you did not build it,** name the reason (scope, time, dependency, "this is the right call but needs a wider conversation"):
+  "El test de regresión que sí escribí solo protege getById. No detectaría la próxima instancia si mañana alguien agrega getByStatus(status) o getByCustomerEmail(email) a orders-dal.ts sin pedir merchantId, el test viejo sigue pasando porque apunta a una función específica, no verifica que toda función del DAL tenga el filtro.
+  
+- **If you did not build it,** name the reason (scope, time, dependency, "this is the right call but needs a wider conversation"): No lo contruí manualmente por que realmente no tengo conocimientos de typescript, sin embargo si entiendo la estructura ya que he visto otras apps locales hechas completamente en python y html.
 
-### Class 2 — <name the class>
-
+### Class 2 — Recalculo de Métricas
+**Instances I fixed: Al calcular diferentes metricas como: revenue, top customers, avg order value ya excluye las ordenes de tipo refund o las resta de manera adecuada para obtener un resultado correcto
+- **The gate I built (or would build): En el caso de revenue resto los refunds a las ventas para obtener revenue y en el caso de top customers o avg order value excluyo refunds del cálculo.
+- **What this gate would catch that a regression test would miss:** La próxima instancia: ya sabemos que el mismo bug existía en 3 lugares distintos (sumAmountByMerchant, avg_order_value, top-customers) — y de hecho tuve que escribir la corrección tres veces por separado. Si mañana se agrega una cuarta métrica (por ejemplo "revenue por semana" o "ticket promedio por tipo de cliente"), nada me garantiza que quien la escriba se acuerde de excluir/restar los refunds
 …
 
-### Class 3 — <name the class>
-
+### Class 3 — Validación de entrada de emails
+**Instances I fixed:** Valida que al hacer un post de una orden el email tenga el formato correcto
+- **The gate I built (or would build): Un regex (EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/) aplicado en el punto de entrada del POST /api/orders, que rechaza con 400 { error: 'invalid_body' } cualquier customer_email que no tenga forma de email
+- **What this gate would catch that a regression test would miss:** si mañana se agrega otro campo de texto libre al schema (por ejemplo, una nota del pedido, un nombre de cliente, un comentario), nada obliga a que ese campo nuevo pase por el mismo regex — el patrón de "validar en el borde de entrada" no está centralizado, cada campo nuevo depende de que alguien se acuerde de aplicarlo otra vez.
 …
-
 ---
 
 ## Anti-patterns we score against
